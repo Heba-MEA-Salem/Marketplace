@@ -1,25 +1,25 @@
-git clone https://github.com/<your-username>/<your-repo-name>.git
-cd <your-repo-name>
+- git clone <the repo link>
+- cd <your-repo-name>
 
-create .gitignore file and add to it:
+- create .gitignore file and add to it:
 .venv/
 .idea/
 __pycache__
 
-# Python virtual environment
-env/
-venv/
-
-# Python cache files
-__pycache__/
-*.pyc
-
-# IDE/editor files
-.vscode/
-.idea/
-
-# Environment variables
-.env
+  # Python virtual environment
+  env/
+  venv/
+    
+  # Python cache files
+  __pycache__/
+  *.pyc
+    
+  # IDE/editor files
+  .vscode/
+  .idea/
+    
+  # Environment variables
+  .env
 
 
 - python -m venv marketplace-venv

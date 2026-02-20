@@ -1,5 +1,5 @@
-- git clone <the repo link>
-- cd <your-repo-name>
+- git clone the-repo-link
+- cd your-repo-name
 
 - create .gitignore file and add to it:
 .venv/

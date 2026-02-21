@@ -2,6 +2,7 @@
 from pydantic import BaseModel, EmailStr, field_validator
 
 
+# create user class, email validation, password validation function
 class UserBase(BaseModel):
     username: str
     email: EmailStr
@@ -13,3 +14,11 @@ class UserBase(BaseModel):
         if confirm_password != info.data.get("password"):
             raise ValueError("Password does not match")
         return confirm_password
+
+
+# Response model to show user info without exposing passwords
+class UserDisplay(BaseModel):
+        username: str
+        email: EmailStr
+        class Config:
+            orm_mode = True

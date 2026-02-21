@@ -22,7 +22,7 @@ def create_user(request: UserBase, db: Session = Depends(get_db)):
 
 # User log out
 
-# Read / display / git a user
+# Read / display / get users  (one user - all)
 
 # Update user
 

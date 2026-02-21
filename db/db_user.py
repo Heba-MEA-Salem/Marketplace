@@ -37,6 +37,9 @@ def create_user(db: Session, request: UserBase):
 # User log out
 
 
+# get users  (one user - all)
 # def get_user_by_id()
+
+
 # def update_user()
 # def delete_user()

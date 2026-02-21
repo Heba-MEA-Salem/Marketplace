@@ -2,13 +2,11 @@
 - cd your-repo-name
 
 - create .gitignore file and add to it:
-.venv/
-.idea/
-__pycache__
-
   # Python virtual environment
+  .venv/
   env/
   venv/
+  marketplace-venv/
     
   # Python cache files
   __pycache__/

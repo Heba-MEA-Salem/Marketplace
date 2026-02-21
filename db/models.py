@@ -1,3 +1,5 @@
+# All tables (or modular: User, Advertisement, Message, Rating)
+
 from db.database import Base
 from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import Integer, String

@@ -1,3 +1,5 @@
+# FastAPI app, includes routers, runs server
+
 from fastapi import FastAPI
 from db import models
 from db.database import engine

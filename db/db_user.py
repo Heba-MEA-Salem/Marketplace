@@ -6,7 +6,7 @@ from db.models import DbUser
 from db.hash import Hash
 
 
-# Create a new user (Register)
+# Create a new user
 def create_user(db: Session, request: UserBase):
 
     # Check if the user is already exists
@@ -32,14 +32,9 @@ def create_user(db: Session, request: UserBase):
     return new_user
 
 
-# User log in
-
-# User log out
 
 
-# get users  (one user - all)
+
 # def get_user_by_id()
-
-
 # def update_user()
 # def delete_user()

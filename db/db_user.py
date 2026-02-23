@@ -1,13 +1,13 @@
 # CRUD for User
 from sqlalchemy.orm.session import Session
-from schemas.user import UserBase
+from schemas.user import UserCreate
 from fastapi import HTTPException
 from db.models import DbUser
 from db.hash import Hash
 
 
 # Create a new user
-def create_user(db: Session, request: UserBase):
+def create_user(db: Session, request: UserCreate):
 
     # Check if the user is already exists
     existing_user = db.query(DbUser).filter(DbUser.email == request.email).first()

@@ -3,7 +3,7 @@ from pydantic import BaseModel, EmailStr, field_validator
 
 
 # Create user class, email validation, password validation function
-class UserBase(BaseModel):
+class UserCreate(BaseModel):
     username: str
     email: EmailStr
     password: str

@@ -1,6 +1,5 @@
 - git clone the-repo-link
 - cd your-repo-name
-
 - python -m venv marketplace-venv
 - marketplace-venv\Scripts\activate.bat  or marketplace-venv\Scripts\activate    for windows
 - source venv/bin/activate   for mac

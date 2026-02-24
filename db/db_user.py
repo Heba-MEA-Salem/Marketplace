@@ -1,10 +1,11 @@
 # CRUD for User
-from sqlalchemy.orm.session import Session
-from schemas.user import UserCreate
-from fastapi import HTTPException
-from db.models import DbUser
-from db.hash import Hash
 
+from schemas.user import UserCreate, UserLogin
+from sqlalchemy.orm.session import Session
+from fastapi import HTTPException, status
+from db.models import DbUser
+from typing import Optional
+from db.hash import Hash
 
 # Create a new user
 def create_user(db: Session, request: UserCreate):
@@ -30,6 +31,25 @@ def create_user(db: Session, request: UserCreate):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+
+
+# User login
+def login_user(db: Session, request: UserLogin):
+    # User can be DbUser or None (why using Optional)
+    user: Optional[DbUser] = db.query(DbUser).filter(DbUser.email == request.email).first()
+
+    if not user:
+        raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+
+    # Compare plaintext password with hashed password
+    if not Hash.verify(request.password, user.password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+
+    return user
+
+
+
 
 
 

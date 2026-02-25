@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from db import db_user
 
-
 router = APIRouter(
     prefix="/user",
     tags=["user"],
@@ -25,14 +24,10 @@ def login(request: UserLogin, db: Session = Depends(get_db)):
     return db_user.login_user(db, request)
 
 
-
-# routers/user.py
+# User log out
 @router.post("/logout")
 def logout():
     return {"detail": "Logged out."}
-
-# User log out
-
 
 
 # Read / display / get users  (one user - all)
@@ -41,11 +36,7 @@ def get_user(id: int, db: Session = Depends(get_db)):
     return db_user.get_user(db, id)
 
 
-
 # Update user
-
-
-
 
 
 # Delete user

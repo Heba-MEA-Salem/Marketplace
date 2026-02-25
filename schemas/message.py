@@ -1,1 +1,0 @@
-# Message input/output schemas

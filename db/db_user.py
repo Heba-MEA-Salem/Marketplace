@@ -62,7 +62,17 @@ def get_user(db: Session, id: int):
 
 
 
-# def update_user()
+# def update_user
+def update_user(db: Session, id: int, request: UserCreate):
+    user = db.query(DbUser).filter(DbUser.id == id)
+    user.update({
+        DbUser.username: request.username,
+        DbUser.email: request.email,
+        DbUser.password: Hash.bcrypt(request.password)
+    })
+    db.commit()
+    return 'Data has been updated!'
+
 
 
 

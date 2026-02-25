@@ -1,0 +1,1 @@
+# Rating input/output schemas

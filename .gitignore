@@ -1,16 +1,3 @@
-# Python virtual environment
 .venv/
-env/
-venv/
-marketplace-venv/
-
-# Python cache files
-__pycache__/
-*.pyc
-
-# IDE/editor files
-.vscode/
 .idea/
-
-# Environment variables
-.env
+__pycache__

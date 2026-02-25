@@ -1,1 +1,0 @@
-# Routes for sending/fetching messages

@@ -12,3 +12,4 @@ db/          Folder for database-related code
 routes/      Folder for API endpoints
 schemas/     Folder for request/response validation
 main.py      FastAPI app, includes routers, runs server
+

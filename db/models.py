@@ -5,7 +5,6 @@ from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import Integer, String
 
 
-
 # Create the user model
 class DbUser(Base):
     __tablename__ = "users"

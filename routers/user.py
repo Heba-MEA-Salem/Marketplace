@@ -26,8 +26,10 @@ def login(request: UserLogin, db: Session = Depends(get_db)):
 
 
 
-
-
+# routers/user.py
+@router.post("/logout")
+def logout():
+    return {"detail": "Logged out."}
 
 # User log out
 

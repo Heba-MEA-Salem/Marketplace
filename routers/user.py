@@ -44,4 +44,9 @@ def get_user(id: int, db: Session = Depends(get_db)):
 
 
 
+
+
 # Delete user
+@router.delete("/user/{id}")
+def delete_user(id: int, db: Session = Depends(get_db)):
+    return db_user.delete_user(db, id)

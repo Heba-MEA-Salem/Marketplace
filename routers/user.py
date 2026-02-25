@@ -29,12 +29,19 @@ def login(request: UserLogin, db: Session = Depends(get_db)):
 
 
 
-
-
 # User log out
 
+
+
 # Read / display / get users  (one user - all)
+@router.get('/{id}', response_model=UserDisplay)
+def get_user(id: int, db: Session = Depends(get_db)):
+    return db_user.get_user(db, id)
+
+
 
 # Update user
+
+
 
 # Delete user

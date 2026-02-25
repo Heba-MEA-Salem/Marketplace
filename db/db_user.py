@@ -51,10 +51,16 @@ def login_user(db: Session, request: UserLogin):
 
 
 
-
-
-
-
 # def get_user_by_id()
+def get_user(db: Session, id: int):
+    user = db.query(DbUser).filter(DbUser.id == id).first()
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} is not found")
+
+    return user
+
+
+
 # def update_user()
 # def delete_user()

@@ -63,4 +63,17 @@ def get_user(db: Session, id: int):
 
 
 # def update_user()
+
+
+
+
 # def delete_user()
+def delete_user(db: Session, id: int):
+    user = db.query(DbUser).filter(DbUser.id == id).first()
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} does not exist")
+
+    db.delete(user)
+    db.commit()
+    return "ok"

@@ -70,8 +70,8 @@ def update_user(db: Session, id: int, request: UserCreate):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} does not exist")
 
 
-    user.username = request.username,
-    user.email = request.email,
+    user.username = request.username
+    user.email = request.email
     user.password = Hash.bcrypt(request.password)
     db.commit()
     return 'Data has been updated!'

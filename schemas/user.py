@@ -21,9 +21,9 @@ class UserCreate(BaseModel):
 class UserDisplay(BaseModel):
         username: str
         email: EmailStr
-        model_config= {"from_attributes": True}  # for pydantic v 2.x.x
+        model_config= {"from_attributes": True}  # for pydantic v: 2.x.x
 
-        # class Config:    ## for pydantic v 1.x.x
+        # class Config:    ## for pydantic v: 1.x.x
         #     orm_mode = True
 
 

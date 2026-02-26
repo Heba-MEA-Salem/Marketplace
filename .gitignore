@@ -14,3 +14,7 @@ __pycache__/
 
 # Environment variables
 .env
+
+
+# db fiel
+marketplace.db

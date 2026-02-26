@@ -30,16 +30,19 @@ def logout():
     return {"detail": "Logged out."}
 
 
-# Read / display / get users  (one user - all)
+# Read / display / get users  (one user)
 @router.get('/{id}', response_model=UserDisplay)
 def get_user(id: int, db: Session = Depends(get_db)):
     return db_user.get_user(db, id)
 
 
 # Update user
+@router.put('/{id}/update')
+def update_user(id: int, request: UserCreate, db: Session = Depends(get_db)):
+    return db_user.update_user(db, id, request)
 
 
 # Delete user
-@router.delete("/user/{id}")
+@router.delete("/delete/{id}")
 def delete_user(id: int, db: Session = Depends(get_db)):
     return db_user.delete_user(db, id)

@@ -15,7 +15,7 @@ app.include_router(category.router)
 
 
 
-@app.get("/all_categories")
+@app.get("/")
 def index():
     return "Hello Team 1"
 

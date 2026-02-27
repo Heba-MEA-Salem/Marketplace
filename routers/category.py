@@ -1,4 +1,4 @@
-from schemas.category import CategoryDisplay
+from schemas.category import CategoryDisplay, CategoryBase
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from db.database import get_db
@@ -14,6 +14,11 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=List[CategoryDisplay])
+@router.post("/new", response_model= CategoryDisplay)
+def new_category(request: CategoryBase, db: Session = Depends(get_db)):
+    return db_category.add_category(db, request)
+
+
+@router.get("/all", response_model=List[CategoryDisplay])
 def get_categories(db: Session = Depends(get_db)):
     return db_category.get_categories(db)

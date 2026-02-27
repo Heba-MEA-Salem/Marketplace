@@ -35,3 +35,16 @@ def delete_category(db: Session, name: str):
     db.delete(category)
     db.commit()
     return f" category {name} deleted"
+
+
+# Update category
+def update_category(db: Session, name: str, request: CategoryBase):
+    category = db.query(DbCategory).filter(DbCategory.name == name).first()
+
+    if not category:
+        raise HTTPException(status_code=404, detail="Category does not exist")
+
+    category.name = request.name
+    db.commit()
+    return f" category {name} is updated to {request.name}"
+

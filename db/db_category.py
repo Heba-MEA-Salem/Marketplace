@@ -25,6 +25,7 @@ def get_categories(db: Session):
     return db.query(DbCategory).all()
 
 
+
 # Delete category
 def delete_category(db: Session, name: str):
     category = db.query(DbCategory).filter(DbCategory.name == name).first()
@@ -35,6 +36,7 @@ def delete_category(db: Session, name: str):
     db.delete(category)
     db.commit()
     return f" category {name} deleted"
+
 
 
 # Update category

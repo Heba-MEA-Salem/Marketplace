@@ -1,1 +1,0 @@
-# Ads input/output schemas

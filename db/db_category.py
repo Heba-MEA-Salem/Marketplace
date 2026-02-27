@@ -23,3 +23,15 @@ def add_category(db: Session, request: CategoryBase):
 # Get all categories
 def get_categories(db: Session):
     return db.query(DbCategory).all()
+
+
+# Delete category
+def delete_category(db: Session, name: str):
+    category = db.query(DbCategory).filter(DbCategory.name == name).first()
+
+    if not category:
+        raise HTTPException(status_code=404, detail="Category does not exist")
+
+    db.delete(category)
+    db.commit()
+    return f" category {name} deleted"

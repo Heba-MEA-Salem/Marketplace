@@ -1,1 +1,0 @@
-# Routes for ad actions (create, view, update, delete, search)

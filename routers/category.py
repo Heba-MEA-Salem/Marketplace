@@ -22,3 +22,8 @@ def new_category(request: CategoryBase, db: Session = Depends(get_db)):
 @router.get("/all", response_model=List[CategoryDisplay])
 def get_categories(db: Session = Depends(get_db)):
     return db_category.get_categories(db)
+
+
+@router.delete("/delete/{name}", response_model=CategoryDisplay)
+def delete_category(name: str, db: Session = Depends(get_db)):
+    return db_category.delete_category(db, name)

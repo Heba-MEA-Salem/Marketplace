@@ -1,19 +1,25 @@
 # FastAPI app, includes routers, runs server
 
+from routers import user, ads, category
 from db.database import engine
 from fastapi import FastAPI
-from routers import user, ads
-from db import models
+from db import models, seed
+
 
 app = FastAPI()
 app.include_router(user.router)
 
 app.include_router(ads.router)
 
+app.include_router(category.router)
 
-@app.get("/")
+
+
+@app.get("/all_categories")
 def index():
     return "Hello Team 1"
 
 
 models.Base.metadata.create_all(engine)
+
+seed.seed_categories()

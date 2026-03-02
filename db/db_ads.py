@@ -31,6 +31,14 @@ def create_ad(
 
 
 # get_ad_by_id()
+def get_ad(db: Session, id: int):
+    ad = db.query(DbAds).filter(DbAds.id == id).first()
+
+    if not ad:
+        raise HTTPException(status_code=404, detail=f"Ad with id {id} is not found")
+    return ad
+
+
 
 # update_ads()
 # delete_ads()

@@ -1,10 +1,10 @@
 
-from sqlalchemy.sql.functions import func
-from sqlalchemy.sql.schema import ForeignKey
-from db.database import Base
-from sqlalchemy import Column, Enum as SAEnum, text
 from sqlalchemy.sql.sqltypes import Integer, String, Text, DateTime
+from sqlalchemy.sql.schema import ForeignKey, UniqueConstraint
+from sqlalchemy import Column, Enum as SAEnum, text
+from sqlalchemy.sql.functions import func
 from sqlalchemy.orm import relationship
+from db.database import Base
 import enum
 
 
@@ -16,7 +16,19 @@ class DbUser(Base):
     username = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
+
     ads = relationship("DbAds", back_populates="seller")
+    buyer_messages = relationship(
+        "DbMessage",
+        foreign_keys="DbMessage.buyer_id",
+        back_populates="buyer"
+    )
+    seller_messages = relationship(
+        "DbMessage",
+        foreign_keys="DbMessage.seller_id",
+        back_populates="seller"
+    )
+
 
 
 # Create the category model
@@ -59,3 +71,29 @@ class DbAds(Base):
 
     seller = relationship("DbUser", back_populates="ads")
     category = relationship("DbCategory", back_populates="ads")
+    messages = relationship("DbMessage", back_populates="ads")
+
+
+
+# Create the message model
+class DbMessage(Base):
+    __tablename__ = "messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    message_body = Column(Text, nullable=False)
+
+    ad_id = Column(Integer, ForeignKey("ads.id"), nullable=False)
+    buyer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    seller_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+
+    # one conversation per buyer per ad
+    __table_args__ = (
+        UniqueConstraint("ad_id", "buyer_id", name="unique_ad_buyer_message"),
+    )
+
+    ads = relationship("DbAds", back_populates="messages")
+    buyer = relationship("DbUser", foreign_keys=[buyer_id], back_populates="buyer_messages")
+    seller = relationship("DbUser", foreign_keys=[seller_id], back_populates="seller_messages")

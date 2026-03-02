@@ -2,6 +2,7 @@
 
 from pydantic import BaseModel, Field
 from datetime import datetime
+from typing import Optional
 
 
 class AdCreate(BaseModel):
@@ -24,3 +25,10 @@ class AdPublic(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class AdUpdate(BaseModel):
+    title: Optional[str] = Field(default=None, min_length=3, max_length=120)
+    description: Optional[str] = Field(default=None, min_length=10)
+    price: Optional[int] = Field(default=None, gt=0)
+    category_id: Optional[int] = None

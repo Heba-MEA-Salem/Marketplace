@@ -1,9 +1,11 @@
 # CRUD for Ads
+from datetime import datetime, timedelta
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from db.database import get_db
-from db.models import DbCategory
+from db.models import DbCategory, AdStatus
 from db.models import DbAds
 from schemas.ads import AdCreate, AdPublic, AdUpdate
 
@@ -66,4 +68,27 @@ def update_ad(db: Session, ad_id: int, payload: AdUpdate, seller_id: int) -> typ
     return ad
 
 # delete_ads()
-# search_ads_by_category_or_recency()
+
+# filter_ads_by_category_or_recency()
+def filter_ads(
+        db: Session,
+        category_id: Optional[int] = None,
+        days: Optional[int] = None,
+        limit: int = 10,
+        offset: int = 0
+):
+    ads = db.query(DbAds).filter(DbAds.status == AdStatus.ACTIVE)
+    if category_id is not None:
+        ads = ads.filter(DbAds.category_id == category_id)
+
+    if days is not None:
+        cutoff = datetime.utcnow() - timedelta(days=days)
+        ads = ads.filter(DbAds.created_at >= cutoff)
+
+    return (
+        ads
+        .order_by(DbAds.created_at.desc())
+        .offset(offset)
+        .limit(limit)
+        .all()
+    )

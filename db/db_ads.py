@@ -84,4 +84,6 @@ def delete_ad(db: Session, ad_id: int, seller_id: int) -> None:
     db.delete(ad)
     db.commit()
 
+
+
 # search_ads_by_category_or_recency()

@@ -1,14 +1,26 @@
 # Password hashing (bcrypt)
 
-from passlib.context import CryptContext
+from fastapi import HTTPException, status
+import bcrypt
 
-pwd_cxt = CryptContext(schemes=['bcrypt'], deprecated="auto")
-
-class Hash():
+class Hash:
     @staticmethod
     def bcrypt(password: str):
-        return pwd_cxt.hash(password)
+
+        hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        return hashed.decode('utf-8')
 
     @staticmethod
     def verify(plain_password: str, hashed_password: str):
-        return pwd_cxt.verify(plain_password, hashed_password)
+
+        if isinstance(hashed_password, str):
+            hashed_password = hashed_password.encode('utf-8')
+
+
+        try:
+            return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password)
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid password hash"
+            )

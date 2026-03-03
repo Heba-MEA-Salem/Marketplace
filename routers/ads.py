@@ -1,6 +1,7 @@
 # Routes for ads
 
 from fastapi import APIRouter, Depends, status, Header
+from fastapi.openapi.models import Response
 from sqlalchemy.orm import Session
 from db.database import get_db
 from schemas.ads import AdCreate, AdPublic, AdUpdate
@@ -28,3 +29,13 @@ def update_ad(
 ):
     updated_ad = db_ads.update_ad(db=db, ad_id=ad_id, payload=payload, seller_id=x_seller_id)
     return updated_ad
+
+
+@router.delete("/{ad_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_ad(
+        ad_id: int,
+        db: Session = Depends(get_db),
+        x_seller_id: int = Header(...),
+):
+    db_ads.delete_ad(db=db, ad_id=ad_id, seller_id=x_seller_id)
+    return None

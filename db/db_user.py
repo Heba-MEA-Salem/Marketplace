@@ -51,7 +51,7 @@ def login_user(db: Session, request: UserLogin):
 
 
 
-# def get_user_by_id()
+# Get_user_by_id()
 def get_user(db: Session, id: int):
     user = db.query(DbUser).filter(DbUser.id == id).first()
 
@@ -62,7 +62,16 @@ def get_user(db: Session, id: int):
 
 
 
-# def update_user
+# Get user by username
+def get_user_by_username(db: Session, username:str):
+    user = db.query(DbUser).filter(DbUser.username == username).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with username {username} does not exist")
+    return user
+
+
+
+# Update_user
 def update_user(db: Session, id: int, request: UserCreate):
     user = db.query(DbUser).filter(DbUser.id == id).first()
 
@@ -80,7 +89,7 @@ def update_user(db: Session, id: int, request: UserCreate):
 
 
 
-# def delete_user()
+# Delete_user()
 def delete_user(db: Session, id: int):
     user = db.query(DbUser).filter(DbUser.id == id).first()
 

@@ -1,6 +1,7 @@
 # Routes for ads
+from typing import List, Optional
 
-from fastapi import APIRouter, Depends, status, Header
+from fastapi import APIRouter, Depends, status, Header, Query
 from schemas.ads import AdCreate, AdPublic, AdUpdate
 from auth.oauth2 import oauth2_scheme
 from sqlalchemy.orm import Session
@@ -14,6 +15,16 @@ router = APIRouter(prefix="/ads", tags=["ads"])
 def create_ad(payload: AdCreate, db: Session = Depends(get_db)):
     return db_ads.create_ad(db=db, payload=payload)
 
+@router.get('/filtered', response_model=List[AdPublic])
+def get_filtered_ads(
+        category_id: Optional[int] = None,
+        days: Optional[int] = None,
+        limit: int = Query(10, le=100),
+        offset: int = 0,
+        db: Session = Depends(get_db)
+):
+    filtered_ads = db_ads.filter_ads(db=db, category_id=category_id, days=days, limit=limit, offset=offset)
+    return filtered_ads
 
 @router.get("/{id}", response_model=AdPublic, status_code=status.HTTP_200_OK)
 def read_ad(id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):

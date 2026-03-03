@@ -67,7 +67,25 @@ def update_ad(db: Session, ad_id: int, payload: AdUpdate, seller_id: int) -> typ
     db.refresh(ad)
     return ad
 
+
 # delete_ads()
+def delete_ad(db: Session, ad_id: int, seller_id: int) -> None:
+    ad = db.query(DbAds).filter(DbAds.id == ad_id).first()
+    if not ad:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Advertisement not found"
+        )
+
+    if ad.seller_id != seller_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You are not the owner of this advertisement"
+        )
+
+    db.delete(ad)
+    db.commit()
+
 
 # filter_ads_by_category_or_recency()
 def filter_ads(

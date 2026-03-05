@@ -19,7 +19,6 @@ class AdPublic(BaseModel):
     description: str
     price: int
     category_id: int
-    seller_id: int
     status: str
     created_at: datetime
 

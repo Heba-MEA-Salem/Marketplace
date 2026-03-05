@@ -10,7 +10,7 @@ class AdCreate(BaseModel):
     description: str = Field(min_length=10)
     price: int = Field(gt=0)
     category_id: int
-    seller_id: int
+
 
 
 class AdPublic(BaseModel):
@@ -19,7 +19,6 @@ class AdPublic(BaseModel):
     description: str
     price: int
     category_id: int
-    seller_id: int
     status: str
     created_at: datetime
 

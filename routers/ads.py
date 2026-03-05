@@ -15,7 +15,7 @@ router = APIRouter(prefix="/ads", tags=["ads"])
 
 @router.post("", response_model=AdPublic, status_code=status.HTTP_201_CREATED)
 def create_ad(payload: AdCreate, db: Session = Depends(get_db), current_user: UserDisplay=Depends(get_current_user)):
-    return db_ads.create_ad(db=db, payload=payload)
+    return db_ads.create_ad(db=db, payload=payload, seller_id=current_user.id)
 
 
 
@@ -46,10 +46,9 @@ def update_ad(
         ad_id: int,
         payload: AdUpdate,
         db: Session = Depends(get_db),
-        x_seller_id: int = Header(...),  # client must send this header while we don't have authentication
         current_user: UserDisplay=Depends(get_current_user)
 ):
-    updated_ad = db_ads.update_ad(db=db, ad_id=ad_id, payload=payload, seller_id=x_seller_id)
+    updated_ad = db_ads.update_ad(db=db, ad_id=ad_id, payload=payload, seller_id=current_user.id)
     return updated_ad
 
 
@@ -58,8 +57,7 @@ def update_ad(
 def delete_ad(
         ad_id: int,
         db: Session = Depends(get_db),
-        x_seller_id: int = Header(...),
         current_user: UserDisplay=Depends(get_current_user)
 ):
-    db_ads.delete_ad(db=db, ad_id=ad_id, seller_id=x_seller_id)
+    db_ads.delete_ad(db=db, ad_id=ad_id, seller_id=current_user.id)
     return None

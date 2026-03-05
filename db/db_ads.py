@@ -13,14 +13,15 @@ from schemas.ads import AdCreate, AdPublic, AdUpdate
 # create_ads()
 def create_ad(
         payload: AdCreate,
-        db: Session = Depends(get_db),
+        db: Session ,
+        seller_id: int
 ):
     category = db.query(DbCategory).filter(DbCategory.id == payload.category_id).first()
     if not category:
         raise HTTPException(status_code=400, detail="Invalid category_id")
 
     ad = DbAds(
-        seller_id=payload.seller_id,
+        seller_id=seller_id,
         category_id=payload.category_id,
         title=payload.title,
         description=payload.description,

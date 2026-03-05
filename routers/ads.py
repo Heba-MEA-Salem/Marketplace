@@ -15,7 +15,7 @@ router = APIRouter(prefix="/ads", tags=["ads"])
 
 @router.post("", response_model=AdPublic, status_code=status.HTTP_201_CREATED)
 def create_ad(payload: AdCreate, db: Session = Depends(get_db), current_user: UserDisplay=Depends(get_current_user)):
-    return db_ads.create_ad(db=db, payload=payload)
+    return db_ads.create_ad(db=db, payload=payload, seller_id=current_user.id)
 
 
 

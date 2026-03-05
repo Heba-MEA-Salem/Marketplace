@@ -1,4 +1,5 @@
 # FastAPI app, includes routers, runs server
+import uvicorn
 
 from routers import user, ads, category, message
 from auth import authentication
@@ -27,3 +28,14 @@ def index():
 models.Base.metadata.create_all(engine)
 
 seed.seed_categories()
+
+
+if __name__ == "__main__":
+    # Important: disable reload while debugging
+    uvicorn.run(
+        "main:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=False,
+        log_level="debug",
+    )

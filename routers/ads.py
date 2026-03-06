@@ -1,12 +1,12 @@
 # Routes for ads
 
-from fastapi import APIRouter, Depends, status, Header, Query
+from fastapi import APIRouter, Depends, status, Query
 from schemas.ads import AdCreate, AdPublic, AdUpdate
 from auth.oauth2 import  get_current_user
+from schemas.user import UserDisplay
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from db.database import get_db
-from schemas.user import UserDisplay
 from db import db_ads
 
 

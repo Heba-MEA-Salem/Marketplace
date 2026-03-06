@@ -1,12 +1,14 @@
 # Routes for sending/fetching messages
 
 from schemas.message import MessageCreate, MessageDisplay
-from fastapi import APIRouter, Depends, status
 from auth.oauth2 import get_current_user
+from fastapi import APIRouter, Depends
 from schemas.user import UserDisplay
 from sqlalchemy.orm import Session
-from db import db_message
 from db.database import get_db
+from db import db_message
+
+
 
 router = APIRouter(
     prefix="/message",

@@ -1,3 +1,5 @@
+# Routes for Category
+
 from schemas.category import CategoryDisplay, CategoryBase
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session

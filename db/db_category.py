@@ -26,7 +26,7 @@ def get_categories(db: Session):
 
 
 
-# Delete category
+# Delete a category
 def delete_category(db: Session, name: str):
     category = db.query(DbCategory).filter(DbCategory.name == name).first()
 
@@ -39,7 +39,7 @@ def delete_category(db: Session, name: str):
 
 
 
-# Update category
+# Update a category
 def update_category(db: Session, name: str, request: CategoryBase):
     category = db.query(DbCategory).filter(DbCategory.name == name).first()
 

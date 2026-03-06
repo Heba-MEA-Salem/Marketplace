@@ -2,6 +2,6 @@
 
 
 
-# add_rating()
-# get_average_rating()
-# get_ratings_for_user()
+# Add a rating
+# Get an average rating
+# Get ratings for user

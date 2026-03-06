@@ -8,7 +8,7 @@ from typing import Optional
 from db.models import DbAds
 
 
-# create_ads()
+# Create ads
 def create_ad(
         payload: AdCreate,
         db: Session ,
@@ -31,7 +31,7 @@ def create_ad(
     return ad
 
 
-# get_ad_by_id()
+# Get ad by id
 def get_ad(db: Session, id: int):
     ad = db.query(DbAds).filter(DbAds.id == id).first()
 
@@ -40,7 +40,7 @@ def get_ad(db: Session, id: int):
     return ad
 
 
-# update_ads()
+# Update ads
 def update_ad(db: Session, ad_id: int, payload: AdUpdate, seller_id: int) -> type[DbAds]:
     ad = db.query(DbAds).filter(DbAds.id == ad_id).first()
     if not ad:
@@ -67,7 +67,7 @@ def update_ad(db: Session, ad_id: int, payload: AdUpdate, seller_id: int) -> typ
     return ad
 
 
-# delete_ads()
+# Delete ads
 def delete_ad(db: Session, ad_id: int, seller_id: int) -> None:
     ad = db.query(DbAds).filter(DbAds.id == ad_id).first()
     if not ad:
@@ -86,7 +86,7 @@ def delete_ad(db: Session, ad_id: int, seller_id: int) -> None:
     db.commit()
 
 
-# filter_ads_by_category_or_recency()
+# Filter ads by category or recency
 def filter_ads(
         db: Session,
         category_id: Optional[int] = None,

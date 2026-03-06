@@ -6,7 +6,7 @@ from schemas.message import MessageCreate
 from fastapi import HTTPException, status
 
 
-# Create_message()
+# Create message
 def create_message(db: Session, request:MessageCreate):
 
     ad = db.query(DbAds).filter(DbAds.id == request.ad_id).first()
@@ -41,5 +41,5 @@ def create_message(db: Session, request:MessageCreate):
 
 
 
-# get_messages_for_user()
-# delete_message()
+# Get messages for user
+# Delete message

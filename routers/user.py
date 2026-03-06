@@ -1,4 +1,4 @@
-# Routes for user actions (register, login, update)
+# Routes for user
 
 from schemas.user import UserDisplay, UserCreate, UserLogin
 from auth.oauth2 import get_current_user

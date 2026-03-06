@@ -4,8 +4,8 @@ from schemas.ads import AdCreate, AdUpdate
 from db.models import DbCategory, AdStatus
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
-from typing import Optional
 from db.models import DbAds
+from typing import Optional
 
 
 # Create ads
@@ -89,12 +89,16 @@ def delete_ad(db: Session, ad_id: int, seller_id: int) -> None:
 # Filter ads by category or recency
 def filter_ads(
         db: Session,
+        q: Optional[str] = None,
         category_id: Optional[int] = None,
         days: Optional[int] = None,
         limit: int = 10,
         offset: int = 0
 ):
     ads = db.query(DbAds).filter(DbAds.status == AdStatus.ACTIVE)
+    if q:
+        ads = ads.filter((DbAds.title.ilike(f"%{q}%")) | (DbAds.description.ilike(f"%{q}%")))
+
     if category_id is not None:
         ads = ads.filter(DbAds.category_id == category_id)
 
@@ -102,10 +106,10 @@ def filter_ads(
         cutoff = datetime.utcnow() - timedelta(days=days)
         ads = ads.filter(DbAds.created_at >= cutoff)
 
-    return (
-        ads
-        .order_by(DbAds.created_at.desc())
-        .offset(offset)
-        .limit(limit)
-        .all()
-    )
+
+    ads = ads.order_by(DbAds.created_at.desc()).offset(offset).limit(limit).all()
+
+    if not ads:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No ads found matching your search/filter criteria")
+
+    return ads

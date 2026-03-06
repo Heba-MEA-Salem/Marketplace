@@ -21,6 +21,7 @@ def create_ad(payload: AdCreate, db: Session = Depends(get_db), current_user: Us
 
 @router.get('/filtered', response_model=List[AdPublic])
 def get_filtered_ads(
+        q: Optional[str] = None,
         category_id: Optional[int] = None,
         days: Optional[int] = None,
         limit: int = Query(10, le=100),
@@ -28,7 +29,7 @@ def get_filtered_ads(
         db: Session = Depends(get_db),
         current_user: UserDisplay=Depends(get_current_user)
 ):
-    filtered_ads = db_ads.filter_ads(db=db, category_id=category_id, days=days, limit=limit, offset=offset)
+    filtered_ads = db_ads.filter_ads(db=db, q=q, category_id=category_id, days=days, limit=limit, offset=offset)
     return filtered_ads
 
 

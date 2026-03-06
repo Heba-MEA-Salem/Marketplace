@@ -1,8 +1,8 @@
 # CRUD for Messages
 
 from db.models import DbMessage, DbAds, DbUser
-from schemas.message import MessageCreate
 from sqlalchemy.orm.session import Session
+from schemas.message import MessageCreate
 from fastapi import HTTPException, status
 
 

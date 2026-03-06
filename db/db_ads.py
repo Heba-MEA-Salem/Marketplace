@@ -1,13 +1,11 @@
 # CRUD for Ads
-from datetime import datetime, timedelta
-from typing import Optional
-
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from db.database import get_db
+from fastapi import HTTPException, status
+from schemas.ads import AdCreate, AdUpdate
 from db.models import DbCategory, AdStatus
+from datetime import datetime, timedelta
+from sqlalchemy.orm import Session
+from typing import Optional
 from db.models import DbAds
-from schemas.ads import AdCreate, AdPublic, AdUpdate
 
 
 # create_ads()

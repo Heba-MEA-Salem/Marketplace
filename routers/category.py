@@ -7,16 +7,13 @@ from db.database import get_db
 from db import db_category
 from typing import List
 
-
-
-
 router = APIRouter(
     prefix="/category",
     tags=["category"],
 )
 
 
-@router.post("/new", response_model= CategoryDisplay)
+@router.post("/new", response_model=CategoryDisplay)
 def new_category(request: CategoryBase, db: Session = Depends(get_db)):
     return db_category.add_category(db, request)
 

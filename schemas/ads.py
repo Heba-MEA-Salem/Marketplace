@@ -14,7 +14,6 @@ class AdCreate(BaseModel):
     category_id: int
 
 
-
 class AdPublic(BaseModel):
     id: int
     title: str
@@ -37,4 +36,3 @@ class AdUpdate(BaseModel):
 
 class AdStatusUpdate(BaseModel):
     status: AdStatus
-

@@ -7,7 +7,6 @@ from db.database import engine
 from fastapi import FastAPI
 from db import models, seed
 
-
 app = FastAPI()
 app.include_router(user.router)
 
@@ -28,7 +27,6 @@ def index():
 models.Base.metadata.create_all(engine)
 
 seed.seed_categories()
-
 
 if __name__ == "__main__":
     # Important: disable reload while debugging

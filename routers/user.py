@@ -16,13 +16,13 @@ router = APIRouter(
 
 
 # Create a user (Register)
-@router.post("/", response_model=UserDisplay)
+@router.post("/", response_model=UserDisplay, status_code=201)
 def create_user(request: UserCreate, db: Session = Depends(get_db)):
     return db_user.create_user(db, request)
 
 
 # User login
-@router.post("/login", response_model=UserDisplay)
+@router.post("/login")
 def login(request: UserLogin, db: Session = Depends(get_db)):
     return db_user.login_user(db, request)
 

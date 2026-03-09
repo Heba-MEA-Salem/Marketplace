@@ -22,7 +22,7 @@ def create_user(request: UserCreate, db: Session = Depends(get_db)):
 
 
 # User login
-@router.post("/login")
+@router.post("/login", response_model=UserDisplay)
 def login(request: UserLogin, db: Session = Depends(get_db)):
     return db_user.login_user(db, request)
 

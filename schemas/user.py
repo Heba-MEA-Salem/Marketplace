@@ -19,6 +19,7 @@ class UserCreate(BaseModel):
 
 # Response model to show user info without exposing passwords
 class UserDisplay(BaseModel):
+        id: int
         username: str
         email: EmailStr
         model_config= {"from_attributes": True}  # for pydantic v: 2.x.x

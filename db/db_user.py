@@ -1,8 +1,10 @@
 # CRUD for User
 
+
 from schemas.user import UserCreate, UserLogin
 from sqlalchemy.orm.session import Session
 from fastapi import HTTPException, status
+from datetime import timedelta
 from db.models import DbUser
 from typing import Optional
 from db.hash import Hash
@@ -36,6 +38,7 @@ def create_user(db: Session, request: UserCreate):
 
 # User login
 def login_user(db: Session, request: UserLogin):
+    from auth.oauth2 import create_access_token
     # User can be DbUser or None (why using Optional)
     user: Optional[DbUser] = db.query(DbUser).filter(DbUser.email == request.email).first()
 
@@ -46,7 +49,15 @@ def login_user(db: Session, request: UserLogin):
     if not Hash.verify(request.password, user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
-    return user
+    access_token = create_access_token({"sub": str(user.id)}, expires_delta=timedelta(minutes=30))
+
+
+    return {
+        "username": user.username,
+        "email": user.email,
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
 
 
 

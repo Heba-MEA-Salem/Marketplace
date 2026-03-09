@@ -4,6 +4,8 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional
 
+from db.models import AdStatus
+
 
 class AdCreate(BaseModel):
     title: str = Field(min_length=3, max_length=120)
@@ -31,3 +33,8 @@ class AdUpdate(BaseModel):
     description: Optional[str] = Field(default=None, min_length=10)
     price: Optional[int] = Field(default=None, gt=0)
     category_id: Optional[int] = None
+
+
+class AdStatusUpdate(BaseModel):
+    status: AdStatus
+

@@ -113,3 +113,41 @@ def filter_ads(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No ads found matching your search/filter criteria")
 
     return ads
+
+
+# Seller can mark items reserved/sold
+def update_ad_status(db: Session, ad_id: int, new_status: AdStatus, seller_id: int):
+    ad = db.query(DbAds).filter(DbAds.id == ad_id).first()
+    if not ad:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Advertisement not found'
+        )
+
+    if ad.seller_id != seller_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You are not the owner of this advertisement"
+        )
+
+    current_status = ad.status
+
+    valid_changes = {
+        AdStatus.ACTIVE: [AdStatus.RESERVED, AdStatus.SOLD],
+        AdStatus.RESERVED: [AdStatus.ACTIVE, AdStatus.SOLD],
+        AdStatus.SOLD: []
+    }
+
+    if new_status not in valid_changes[current_status]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Cannot change status from {current_status} to {new_status}"
+        )
+
+    ad.status = new_status
+    db.commit()
+    db.refresh(ad)
+
+    return ad
+
+

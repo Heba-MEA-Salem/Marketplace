@@ -1,7 +1,7 @@
 # Routes for ads
 
 from fastapi import APIRouter, Depends, status, Query
-from schemas.ads import AdCreate, AdPublic, AdUpdate
+from schemas.ads import AdCreate, AdPublic, AdUpdate, AdStatusUpdate
 from auth.oauth2 import  get_current_user
 from schemas.user import UserDisplay
 from sqlalchemy.orm import Session
@@ -33,6 +33,15 @@ def get_filtered_ads(
     return filtered_ads
 
 
+@router.patch("/{ad_id}/status", response_model=AdPublic)
+def update_ad_status(
+        id: int,
+        payload: AdStatusUpdate,
+        db: Session = Depends(get_db),
+        CurrentUser: UserDisplay=Depends(get_current_user)
+):
+    updated_ad = db_ads.update_ad_status(db=db, ad_id=id, new_status=payload.status, seller_id=CurrentUser.id)
+    return updated_ad
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
 def read_ad(id: int, db: Session = Depends(get_db), current_user: UserDisplay=Depends(get_current_user)):

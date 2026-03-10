@@ -36,3 +36,4 @@ class AdUpdate(BaseModel):
 
 class AdStatusUpdate(BaseModel):
     status: AdStatus
+    buyer_id: Optional[int] = None

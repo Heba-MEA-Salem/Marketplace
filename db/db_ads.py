@@ -116,7 +116,7 @@ def filter_ads(
 
 
 # Seller can mark items reserved/sold
-def update_ad_status(db: Session, ad_id: int, new_status: AdStatus, seller_id: int):
+def update_ad_status(db: Session, ad_id: int, new_status: AdStatus, seller_id: int, buyer_id: Optional[int] = None):
     ad = db.query(DbAds).filter(DbAds.id == ad_id).first()
     if not ad:
         raise HTTPException(
@@ -143,6 +143,15 @@ def update_ad_status(db: Session, ad_id: int, new_status: AdStatus, seller_id: i
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Cannot change status from {current_status} to {new_status}"
         )
+
+    if new_status == AdStatus.SOLD:
+        if buyer_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Buyer id is required when marking as SOLD"
+            )
+        ad.buyer_id = buyer_id
+
 
     ad.status = new_status
     db.commit()

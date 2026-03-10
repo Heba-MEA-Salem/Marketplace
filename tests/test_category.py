@@ -1,13 +1,13 @@
 
 import pytest
 from fastapi.testclient import TestClient
-from fastapi import status, HTTPException
+from fastapi import status
 
 
 
 
 
-# import the client fixture from conftest.py
+# Import the client fixture from conftest.py
 @pytest.fixture
 def client_fixture(client):
     return client

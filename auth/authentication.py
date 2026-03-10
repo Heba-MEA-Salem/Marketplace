@@ -16,7 +16,7 @@ def get_token(request: OAuth2PasswordRequestForm = Depends(), db:Session = Depen
     user = db.query(models.DbUser).filter(models.DbUser.username == request.username).first()
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="InVALID CREDENTIALS")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Credentials")
 
     if not Hash.verify(request.password, user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect Password")

@@ -52,6 +52,10 @@ def get_user_messages(db: Session, user_id: int):
         .order_by(DbMessage.created_at.desc())
         .all()
     )
+
+    if not messages:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Message not found")
+
     return messages
 
 # Delete message

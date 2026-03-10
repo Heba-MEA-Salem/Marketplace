@@ -225,7 +225,7 @@ def test_update_user_failure_invalid_token(client: TestClient):
     assert create_response.status_code == status.HTTP_201_CREATED
     user_id = create_response.json()["id"]
 
-    # override get current user
+    # override get_current_user
     def override_get_current_user():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
@@ -264,7 +264,7 @@ def test_delete_user_success(client: TestClient):
     token = login_response.json()["access_token"]
     headers = {"Authorization": "Bearer " + token}
 
-    # override get current user
+    # override get_current_user
     def override_get_current_user():
         return {"username": "Heba", "email": "heba@gmail.com", "password": "hs123"}
     app.dependency_overrides[get_current_user] = override_get_current_user
@@ -290,7 +290,7 @@ def test_delete_user_failure_user_not_found(client: TestClient):
     token = login_response.json()["access_token"]
     headers = {"Authorization": "Bearer " + token}
 
-    # override get current user
+    # override get_current_user
     def override_get_current_user():
         return  UserDisplay(id=fake_user_id, username="Heba", email="heba@gmail.com")
     app.dependency_overrides[get_current_user] = override_get_current_user
@@ -310,7 +310,7 @@ def test_delete_user_failure_invalid_token(client: TestClient):
     assert create_response.status_code == status.HTTP_201_CREATED
     user_id = create_response.json()["id"]
 
-    # override get current user
+    # override get_current_user
     def override_get_current_user():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
     app.dependency_overrides[get_current_user] = override_get_current_user

@@ -57,6 +57,6 @@ def test_get_token_user_not_found(client: TestClient):
 
     client.post("/user/", json=user)
 
-    response = client.post("/token", data={"username": "FakeUser", "password": "hs123"})
+    response = client.post("/token", data={"username": "Hapi", "password": "hs123"})
     assert response.status_code == status.HTTP_404_NOT_FOUND
     assert response.json()["detail"] == "Invalid Credentials"

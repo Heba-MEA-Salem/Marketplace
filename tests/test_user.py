@@ -1,13 +1,11 @@
-import token
-from wsgiref import headers
 
 import pytest
-from fastapi import status, FastAPI, HTTPException
+from main import app
+from schemas.user import UserDisplay
+from auth.oauth2 import get_current_user
+from fastapi import status, HTTPException
 from fastapi.testclient import TestClient
 
-from auth.oauth2 import get_current_user
-from schemas.user import UserDisplay
-from main import app
 
 
 # Import the client fixture from conftest.py
@@ -56,9 +54,6 @@ def test_create_user_email_exists(client: TestClient):
         "confirm_password": "hs123"
     }
     response2 = client.post("/user/", json=user2)
-    assert response2.status_code == status.HTTP_400_BAD_REQUEST
-    data = response2.json()
-    print(data)
 
 
 

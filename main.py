@@ -1,7 +1,7 @@
 # FastAPI app, includes routers, runs server
 import uvicorn
 
-from routers import user, ads, category, message
+from routers import user, ads, category, message, rating
 from auth import authentication
 from db.database import engine
 from fastapi import FastAPI
@@ -17,6 +17,8 @@ app.include_router(category.router)
 app.include_router(message.router)
 
 app.include_router(authentication.router)
+
+app.include_router(rating.router)
 
 
 @app.get("/")

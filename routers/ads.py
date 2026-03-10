@@ -38,7 +38,7 @@ def update_ad_status(
         db: Session = Depends(get_db),
         CurrentUser: UserDisplay = Depends(get_current_user)
 ):
-    updated_ad = db_ads.update_ad_status(db=db, ad_id=id, new_status=payload.status, seller_id=CurrentUser.id)
+    updated_ad = db_ads.update_ad_status(db=db, ad_id=id, new_status=payload.status, seller_id=CurrentUser.id, buyer_id=payload.buyer_id)
     return updated_ad
 
 

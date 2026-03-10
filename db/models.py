@@ -17,7 +17,7 @@ class DbUser(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
 
-    ads = relationship("DbAds", back_populates="seller")
+    ads = relationship("DbAds", foreign_keys="DbAds.seller_id", back_populates="seller")
     buyer_messages = relationship(
         "DbMessage",
         foreign_keys="DbMessage.buyer_id",
@@ -53,7 +53,8 @@ class DbAds(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    seller_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    seller_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    buyer_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=False, index=True)
 
     title = Column(String(120), nullable=False)
@@ -69,9 +70,11 @@ class DbAds(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    seller = relationship("DbUser", back_populates="ads")
+    seller = relationship("DbUser", foreign_keys=[seller_id], back_populates="ads")
+    buyer = relationship("DbUser", foreign_keys=[buyer_id])
     category = relationship("DbCategory", back_populates="ads")
     messages = relationship("DbMessage", back_populates="ads")
+    ratings = relationship("DbRating", back_populates="ads")
 
 
 
@@ -97,3 +100,18 @@ class DbMessage(Base):
     ads = relationship("DbAds", back_populates="messages")
     buyer = relationship("DbUser", foreign_keys=[buyer_id], back_populates="buyer_messages")
     seller = relationship("DbUser", foreign_keys=[seller_id], back_populates="seller_messages")
+
+
+class DbRating(Base):
+    __tablename__ = "ratings"
+    id = Column(Integer, primary_key=True, index=True)
+    ad_id = Column(Integer, ForeignKey("ads.id"), nullable=False)
+    rater_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    score = Column(Integer, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+    ads = relationship("DbAds", back_populates="ratings")
+
+    __table_args__ = (
+        UniqueConstraint("ad_id", "rater_id", name="unique_rating_per_ad_per_user"),
+    )

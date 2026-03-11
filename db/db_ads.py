@@ -174,3 +174,5 @@ def update_ad_status(db: Session, ad_id: int, new_status: AdStatus, seller_id: i
     return ad
 
 
+
+

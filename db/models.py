@@ -41,6 +41,7 @@ class DbCategory(Base):
     ads = relationship("DbAds", back_populates="category")
 
 
+
 # Create the ads model
 class AdStatus(str, enum.Enum):
     ACTIVE = "ACTIVE"
@@ -102,6 +103,9 @@ class DbMessage(Base):
     seller = relationship("DbUser", foreign_keys=[seller_id], back_populates="seller_messages")
 
 
+
+
+# Create the rating model
 class DbRating(Base):
     __tablename__ = "ratings"
     id = Column(Integer, primary_key=True, index=True)

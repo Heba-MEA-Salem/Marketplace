@@ -1,11 +1,12 @@
 # CRUD for Ads
-from fastapi import HTTPException, status
+from db.models import DbCategory, AdStatus, DbRating
 from schemas.ads import AdCreate, AdUpdate
-from db.models import DbCategory, AdStatus
+from fastapi import HTTPException, status
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from db.models import DbAds
 from typing import Optional
+from sqlalchemy import func
 
 
 # Create ads
@@ -96,6 +97,7 @@ def filter_ads(
         offset: int = 0
 ):
     ads = db.query(DbAds).filter(DbAds.status == AdStatus.ACTIVE)
+
     if q:
         ads = ads.filter((DbAds.title.ilike(f"%{q}%")) | (DbAds.description.ilike(f"%{q}%")))
 
@@ -107,7 +109,19 @@ def filter_ads(
         ads = ads.filter(DbAds.created_at >= cutoff)
 
 
-    ads = ads.order_by(DbAds.created_at.desc()).offset(offset).limit(limit).all()
+    ads = (
+        ads
+        .outerjoin(DbRating)
+        .group_by(DbAds.id)
+        .order_by(
+            DbAds.created_at.desc(),
+            func.coalesce(func.avg(DbRating.score), 0).desc()
+        )
+        .offset(offset)
+        .limit(limit)
+
+    ).all()
+
 
     if not ads:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No ads found matching your search/filter criteria")

@@ -6,6 +6,7 @@ from datetime import datetime
 class RatingCreate(BaseModel):
     score: int = Field(..., ge=1, le=5)
 
+
 class RatingDisplay(BaseModel):
     id: int
     ad_id: int

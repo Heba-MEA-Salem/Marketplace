@@ -18,10 +18,10 @@ router = APIRouter(
 @router.post("/", response_model=MessageDisplay)
 def create_message(request: MessageCreate, db: Session = Depends(get_db),
                    current_user: UserDisplay = Depends(get_current_user)):
-    return db_message.create_message(db, request)
+    return db_message.create_message(db, request, buyer_id=current_user.id)
 
 
-@router.get("/")
+@router.get("/all")
 def get_user_messages(
         db: Session = Depends(get_db),
         current_user: UserDisplay = Depends(get_current_user)

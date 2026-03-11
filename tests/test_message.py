@@ -136,7 +136,6 @@ def test_create_message_failure_existing_message(client: TestClient):
 
 def test_create_message_failure(client: TestClient):
     client.post("/user", json=user)
-
     # login to get a token
     login_response = client.post("/user/login", json=login_data)
     assert login_response.status_code == status.HTTP_200_OK
@@ -159,7 +158,7 @@ def test_create_message_failure(client: TestClient):
 
 
 
-# Test  get a message endpoint
+# Test read all messages endpoint
 # Success
 def test_read_all_message_success(client: TestClient):
     # post users
@@ -229,4 +228,71 @@ def test_read_all_message_failure(client: TestClient):
 
     response = client.get("/message/all", headers=headers)
     assert response.status_code == status.HTTP_404_NOT_FOUND
+    app.dependency_overrides.pop(override_get_current_user, None)
+
+
+
+# Test delete message endpoint
+# Success
+def test_delete_message_success(client: TestClient):
+
+    # post users
+    client.post("/user", json=user)
+    client.post("/user", json=user2)
+
+    # login to get a token
+    login_response = client.post("/user/login", json=login_data)
+    assert login_response.status_code == status.HTTP_200_OK
+    token = login_response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # override get_current_user
+    def override_get_current_user():
+        return UserDisplay(id=1, username="Heba", email="heba@gmail.com")
+
+    app.dependency_overrides[get_current_user] = override_get_current_user
+
+    # post an ad and a category
+    client.post("/category/new", json=category)
+    client.post("/ads/", json=ad)
+
+    # call the protected endpoint
+    response = client.post("/message/", json=message, headers=headers)
+    assert response.status_code == status.HTTP_200_OK
+
+    message_id = response.json()["id"]
+
+    delete_response = client.delete(f"/message/delete/{message_id}", headers=headers)
+    assert delete_response.status_code == status.HTTP_200_OK
+
+    app.dependency_overrides.pop(override_get_current_user, None)
+
+
+
+
+
+
+# Failure
+def test_delete_message_failure(client: TestClient):
+
+    client.post("/user", json=user)
+
+    # login to get a token
+    login_response = client.post("/user/login", json=login_data)
+    assert login_response.status_code == status.HTTP_200_OK
+    token = login_response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # override get_current_user
+    def override_get_current_user():
+        return UserDisplay(id=1, username="Heba", email="heba@gmail.com")
+
+    app.dependency_overrides[get_current_user] = override_get_current_user
+
+    fake_message_id = 99999
+
+    # call the protected endpoint
+    response = client.delete(f"/message/delete/{fake_message_id}", headers=headers)
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
     app.dependency_overrides.pop(override_get_current_user, None)

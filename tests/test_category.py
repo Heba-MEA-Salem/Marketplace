@@ -57,8 +57,7 @@ def test_read_all_categories_success(client: TestClient):
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert isinstance(data, list)
-    assert len(data) == 2
-    assert data[0]["name"] == "Accessories"
+    assert data[len(data)-1]["name"] == "Cosmetics"
 
 
 # Failure

@@ -5,7 +5,6 @@ from datetime import datetime
 
 class MessageCreate(BaseModel):
     ad_id: int
-    buyer_id: int
     seller_id: int
     message_body: str
 

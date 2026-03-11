@@ -121,7 +121,6 @@ def test_create_message_failure_existing_message(client: TestClient):
     # call the protected endpoint
     message2 = {
         "ad_id": 1,
-        "buyer_id": 1,
         "seller_id": 2,
         "message_body": "Is this product still available"
     }
@@ -180,22 +179,20 @@ def test_read_all_message_success(client: TestClient):
     app.dependency_overrides[get_current_user] = override_get_current_user
 
     # post ads and a category
-
     client.post("/category/new", json=category)
     client.post("/ads/", json=ad)
     client.post("/ads/", json=ad2)
 
     # post messages
     message2 = {
-        "ad_id": 1,
-        "buyer_id": 2,
+        "ad_id": 2,
         "seller_id": 1,
         "message_body": "I want two pieces"
     }
     client.post("/message/", json=message, headers=headers)
     client.post("/message/", json=message2, headers=headers)
 
-    response = client.get("/message/", headers=headers)
+    response = client.get("/message/all", headers=headers)
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert len(data) == 2
@@ -230,6 +227,6 @@ def test_read_all_message_failure(client: TestClient):
     client.post("/ads/", json=ad2)
 
 
-    response = client.get("/message/", headers=headers)
+    response = client.get("/message/all", headers=headers)
     assert response.status_code == status.HTTP_404_NOT_FOUND
     app.dependency_overrides.pop(override_get_current_user, None)

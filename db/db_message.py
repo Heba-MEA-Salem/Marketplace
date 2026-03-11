@@ -8,12 +8,12 @@ from sqlalchemy import or_
 
 
 # Create message
-def create_message(db: Session, request: MessageCreate):
+def create_message(db: Session, request: MessageCreate, buyer_id: int):
     ad = db.query(DbAds).filter(DbAds.id == request.ad_id).first()
     if not ad:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ad not found")
 
-    buyer = db.query(DbUser).filter(DbUser.id == request.buyer_id).first()
+    buyer = db.query(DbUser).filter(DbUser.id == buyer_id).first()
     if not buyer:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Buyer not found")
 
@@ -22,14 +22,14 @@ def create_message(db: Session, request: MessageCreate):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seller not found")
 
     existing_message = db.query(DbMessage).filter(DbMessage.ad_id == request.ad_id,
-                                                  DbMessage.buyer_id == request.buyer_id).first()
+                                                  DbMessage.buyer_id == buyer_id).first()
 
     if existing_message:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Message already exists")
 
     message = DbMessage(
         ad_id=request.ad_id,
-        buyer_id=request.buyer_id,
+        buyer_id=buyer_id,
         seller_id=request.seller_id,
         message_body=request.message_body
     )

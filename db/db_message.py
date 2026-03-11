@@ -2,8 +2,9 @@
 
 from db.models import DbMessage, DbAds, DbUser
 from sqlalchemy.orm.session import Session
-from schemas.message import MessageCreate
 from fastapi import HTTPException, status
+from schemas.message import MessageCreate
+from fastapi.params import Depends
 from sqlalchemy import or_
 
 
@@ -58,4 +59,17 @@ def get_user_messages(db: Session, user_id: int):
 
     return messages
 
+
+
 # Delete message
+def delete_message(message_id: int, db: Session ):
+    message = db.query(DbMessage).filter(DbMessage.id == message_id).first()
+
+    if not message:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Message not found")
+
+
+    db.delete(message)
+    db.commit()
+
+    return "Message is deleted"

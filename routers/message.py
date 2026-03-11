@@ -15,15 +15,25 @@ router = APIRouter(
 )
 
 
+
+# Create a new message
 @router.post("/", response_model=MessageDisplay)
 def create_message(request: MessageCreate, db: Session = Depends(get_db),
                    current_user: UserDisplay = Depends(get_current_user)):
     return db_message.create_message(db, request, buyer_id=current_user.id)
 
 
+# Read all messages
 @router.get("/all")
 def get_user_messages(
         db: Session = Depends(get_db),
         current_user: UserDisplay = Depends(get_current_user)
 ):
     return db_message.get_user_messages(db, current_user.id)
+
+
+
+# Delete a message
+@router.delete("/delete/{id}")
+def delete_message(id: int, db: Session = Depends(get_db), current_user: UserDisplay = Depends(get_current_user)):
+    return db_message.delete_message(id, db)

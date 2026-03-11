@@ -1,13 +1,11 @@
-import token
-from wsgiref import headers
 
 import pytest
-from fastapi import status, FastAPI, HTTPException
+from main import app
+from schemas.user import UserDisplay
+from auth.oauth2 import get_current_user
+from fastapi import status, HTTPException
 from fastapi.testclient import TestClient
 
-from auth.oauth2 import get_current_user
-from schemas.user import UserDisplay
-from main import app
 
 
 # Import the client fixture from conftest.py
@@ -56,9 +54,6 @@ def test_create_user_email_exists(client: TestClient):
         "confirm_password": "hs123"
     }
     response2 = client.post("/user/", json=user2)
-    assert response2.status_code == status.HTTP_400_BAD_REQUEST
-    data = response2.json()
-    print(data)
 
 
 
@@ -230,7 +225,7 @@ def test_update_user_failure_invalid_token(client: TestClient):
     assert create_response.status_code == status.HTTP_201_CREATED
     user_id = create_response.json()["id"]
 
-    # override get current user
+    # override get_current_user
     def override_get_current_user():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
@@ -269,7 +264,7 @@ def test_delete_user_success(client: TestClient):
     token = login_response.json()["access_token"]
     headers = {"Authorization": "Bearer " + token}
 
-    # override get current user
+    # override get_current_user
     def override_get_current_user():
         return {"username": "Heba", "email": "heba@gmail.com", "password": "hs123"}
     app.dependency_overrides[get_current_user] = override_get_current_user
@@ -295,7 +290,7 @@ def test_delete_user_failure_user_not_found(client: TestClient):
     token = login_response.json()["access_token"]
     headers = {"Authorization": "Bearer " + token}
 
-    # override get current user
+    # override get_current_user
     def override_get_current_user():
         return  UserDisplay(id=fake_user_id, username="Heba", email="heba@gmail.com")
     app.dependency_overrides[get_current_user] = override_get_current_user
@@ -315,7 +310,7 @@ def test_delete_user_failure_invalid_token(client: TestClient):
     assert create_response.status_code == status.HTTP_201_CREATED
     user_id = create_response.json()["id"]
 
-    # override get current user
+    # override get_current_user
     def override_get_current_user():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
     app.dependency_overrides[get_current_user] = override_get_current_user

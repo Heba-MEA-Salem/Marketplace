@@ -23,7 +23,7 @@ def get_categories(db: Session = Depends(get_db)):
     return db_category.get_categories(db)
 
 
-@router.delete("/delete/{name}", response_model=CategoryDisplay)
+@router.delete("/delete/{name}")
 def delete_category(name: str, db: Session = Depends(get_db)):
     return db_category.delete_category(db, name)
 

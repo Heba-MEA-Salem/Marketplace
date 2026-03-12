@@ -94,6 +94,8 @@ def test_rating_ad_success(client: TestClient):
     finally:
         app.dependency_overrides.pop(get_current_user, None)
 
+
+
 # Failure
 def test_rating_not_existing_ad_failure(client: TestClient):
     # create users

@@ -1,11 +1,11 @@
 # CRUD for User
 
 
+from db.models import DbUser, DbAds, DbMessage, DbRating
 from schemas.user import UserCreate, UserLogin
 from sqlalchemy.orm.session import Session
 from fastapi import HTTPException, status
 from datetime import timedelta
-from db.models import DbUser
 from typing import Optional
 from db.hash import Hash
 
@@ -106,6 +106,13 @@ def delete_user(db: Session, id: int):
 
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} does not exist")
+
+
+    # Delete all related ads, msgs, ratings to the user
+    db.query(DbAds).filter(DbAds.seller_id == id).delete(synchronize_session=False)
+    db.query(DbMessage).filter((DbMessage.buyer_id == id) | (DbMessage.seller_id == id)).delete(synchronize_session=False)
+    db.query(DbRating).filter(DbRating.id == id).delete(synchronize_session=False)
+
 
     db.delete(user)
     db.commit()

@@ -1,11 +1,11 @@
 # CRUD for User
 
 
+from db.models import DbUser, DbAds, DbMessage, DbRating
 from schemas.user import UserCreate, UserLogin
 from sqlalchemy.orm.session import Session
 from fastapi import HTTPException, status
 from datetime import timedelta
-from db.models import DbUser, DbAds, DbMessage, DbRating
 from typing import Optional
 from db.hash import Hash
 

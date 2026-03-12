@@ -12,7 +12,7 @@ from schemas.user import UserDisplay
 
 router = APIRouter(prefix="/ratings", tags=["ratings"])
 
-@router.post("/ads/{ad_id}", response_model=RatingDisplay)
+@router.post("/ads/{ad_id}", response_model=RatingDisplay, status_code=status.HTTP_201_CREATED)
 def rate_ad(
         ad_id: int,
         payload: RatingCreate,

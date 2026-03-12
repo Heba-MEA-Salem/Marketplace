@@ -29,6 +29,3 @@ def create_rating(db: Session, ad_id: int, rater_id: int, score:int):
     return rating
 
 
-
-# Get an average rating
-# Get ratings for user
